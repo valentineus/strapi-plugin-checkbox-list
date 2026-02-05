@@ -6,6 +6,10 @@ const register = ({ strapi }: { strapi: Core.Strapi }) => {
     name: 'checkbox-list',
     plugin: 'checkbox-list',
     type: 'json',
+    inputSize: {
+      default: 6,
+      isResizable: true,
+    },
   });
 };
 

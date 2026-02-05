@@ -3,38 +3,27 @@ import type { ReactNode } from 'react';
 import { Box, Checkbox, Field, Flex, Typography } from '@strapi/design-system';
 import { useIntl } from 'react-intl';
 
-type CheckboxListInputProps = {
+type CheckboxListDefaultInputProps = {
   name: string;
   value?: unknown;
   onChange: (eventOrPath: { target: { name: string; value: string[] } }, value?: unknown) => void;
-  attribute?: {
-    enum?: string[];
-    options?: {
-      enum?: string[];
-    };
-  } | null;
-  label?: ReactNode;
-  hint?: ReactNode;
+  intlLabel?: {
+    id: string;
+    defaultMessage: string;
+    values?: Record<string, string | number | boolean | null | undefined>;
+  };
+  description?: {
+    id: string;
+    defaultMessage: string;
+    values?: Record<string, string | number | boolean | null | undefined>;
+  };
+  labelAction?: ReactNode;
   required?: boolean;
   disabled?: boolean;
   error?: string;
-  labelAction?: ReactNode;
-};
-
-const getEnumValues = (attribute: CheckboxListInputProps['attribute']): string[] => {
-  if (!attribute) {
-    return [];
-  }
-
-  if (Array.isArray(attribute.enum)) {
-    return attribute.enum;
-  }
-
-  if (Array.isArray(attribute.options?.enum)) {
-    return attribute.options.enum;
-  }
-
-  return [];
+  modifiedData?: {
+    enum?: string[];
+  };
 };
 
 const normalizeValue = (value: unknown): string[] => {
@@ -49,21 +38,26 @@ const normalizeValue = (value: unknown): string[] => {
   return [];
 };
 
-const CheckboxListInput = ({
+const CheckboxListDefaultInput = ({
   name,
   value,
   onChange,
-  attribute,
-  label,
-  hint,
+  intlLabel,
+  description,
+  labelAction,
   required = false,
   disabled = false,
   error,
-  labelAction,
-}: CheckboxListInputProps) => {
+  modifiedData,
+}: CheckboxListDefaultInputProps) => {
   const { formatMessage } = useIntl();
-  const enumValues = getEnumValues(attribute);
+  const enumValues = Array.isArray(modifiedData?.enum) ? modifiedData.enum : [];
   const selectedValues = normalizeValue(value);
+
+  const label = intlLabel
+    ? formatMessage(intlLabel, intlLabel.values ?? {})
+    : name;
+  const hint = description ? formatMessage(description, description.values ?? {}) : undefined;
 
   const handleToggle = (option: string, isChecked: boolean) => {
     const nextValues = isChecked
@@ -80,7 +74,7 @@ const CheckboxListInput = ({
 
   return (
     <Field.Root name={name} hint={hint} error={error} required={required}>
-      <Field.Label action={labelAction}>{label ?? name}</Field.Label>
+      <Field.Label action={labelAction}>{label}</Field.Label>
       {enumValues.length > 0 ? (
         <Flex direction="column" gap={2} paddingTop={1} alignItems="flex-start">
           {enumValues.map((option) => (
@@ -112,4 +106,4 @@ const CheckboxListInput = ({
   );
 };
 
-export default CheckboxListInput;
+export { CheckboxListDefaultInput };
