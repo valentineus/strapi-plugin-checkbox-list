@@ -12,7 +12,6 @@ A custom field plugin for Strapi v5 that extends the Content Type Builder with a
 ## Requirements
 
 - Node.js and npm compatible with Strapi v5
-- Strapi `@strapi/strapi` ^5.35.0
 
 ## Installation
 
