@@ -58,7 +58,7 @@
   },
   "strapi": {
     "kind": "plugin",
-    "name": "strapi-plugin-checkbox-list",
+    "name": "checkbox-list",
     "displayName": "",
     "description": ""
   },
