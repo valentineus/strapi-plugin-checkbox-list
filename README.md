@@ -43,7 +43,7 @@ This project is actively maintained and welcomes contributions. Issues and pull 
 
 Development primarily takes place on the self-hosted Git instance, with GitHub serving as a mirror for broader accessibility.
 
-**Maintainer**: Valentin Popov <valentin@popov.link>
+**Maintainer**: [Valentin Popov](mailto:valentin@popov.link)
 
 ## Development
 
