@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "checkbox_items",
+  "info": {
+    "singularName": "checkbox-item",
+    "pluralName": "checkbox-items",
+    "displayName": "Checkbox Item",
+    "description": "Content type for checkbox list integration tests"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "choices": {
+      "type": "customField",
+      "customField": "plugin::checkbox-list.checkbox-list",
+      "options": {
+        "enum": ["alpha", "beta", "gamma"]
+      }
+    },
+    "choicesRequired": {
+      "type": "customField",
+      "customField": "plugin::checkbox-list.checkbox-list",
+      "options": {
+        "enum": ["alpha", "beta"]
+      },
+      "required": true
+    },
+    "choicesPrivate": {
+      "type": "customField",
+      "customField": "plugin::checkbox-list.checkbox-list",
+      "options": {
+        "enum": ["secret", "top-secret"]
+      },
+      "private": true
+    },
+    "choicesDefault": {
+      "type": "customField",
+      "customField": "plugin::checkbox-list.checkbox-list",
+      "options": {
+        "enum": ["defaultA", "defaultB"]
+      },
+      "default": ["defaultA"]
+    }
+  }
+}

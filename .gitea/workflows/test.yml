@@ -1,6 +1,9 @@
 name: Test
 
 on:
+  push:
+    branches:
+      - master
   pull_request:
   workflow_dispatch:
 
@@ -29,21 +32,26 @@ jobs:
           mkdir -p playground/.yalc/strapi-plugin-checkbox-list
           tar -xzf "$TARBALL" -C playground/.yalc/strapi-plugin-checkbox-list --strip-components=1
       - name: Install playground deps
-        run: npm ci --prefix playground
+        working-directory: playground
+        run: npm ci
       - name: Build playground
-        run: npm run build --prefix playground
+        working-directory: playground
+        run: npm run build
       - name: Integration tests (Jest + Supertest)
-        run: npm run test:integration --prefix playground
+        working-directory: playground
+        run: npm run test:integration
 
   e2e:
     name: E2E
     runs-on: ubuntu-latest
     needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     env:
       STRAPI_ADMIN_EMAIL: admin@example.com
       STRAPI_ADMIN_PASSWORD: Admin12345
       STRAPI_ADMIN_FIRSTNAME: Admin
       STRAPI_ADMIN_LASTNAME: User
+      DATABASE_FILENAME: .tmp/e2e.db
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -63,22 +71,30 @@ jobs:
           mkdir -p playground/.yalc/strapi-plugin-checkbox-list
           tar -xzf "$TARBALL" -C playground/.yalc/strapi-plugin-checkbox-list --strip-components=1
       - name: Install playground deps
-        run: npm ci --prefix playground
+        working-directory: playground
+        run: npm ci
+      - name: Install Playwright browsers
+        working-directory: playground
+        run: npx playwright install --with-deps chromium
       - name: Create admin user
+        working-directory: playground
         run: |
-          cd playground
           npx strapi admin:create-user \
             --email "$STRAPI_ADMIN_EMAIL" \
             --password "$STRAPI_ADMIN_PASSWORD" \
             --firstname "$STRAPI_ADMIN_FIRSTNAME" \
             --lastname "$STRAPI_ADMIN_LASTNAME"
       - name: Start Strapi
+        env:
+          DATABASE_FILENAME: .tmp/e2e.db
         run: |
+          rm -f playground/.tmp/e2e.db
           npm run develop --prefix playground -- --host 0.0.0.0 --port 1337 &
           echo $! > /tmp/strapi.pid
           until curl -sSf http://127.0.0.1:1337/admin >/dev/null; do sleep 2; done
       - name: E2E tests (Playwright/Cypress)
-        run: npm run e2e --prefix playground
+        working-directory: playground
+        run: npm run e2e
       - name: Stop Strapi
         if: always()
         run: |

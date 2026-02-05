@@ -503,6 +503,57 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCheckboxItemCheckboxItem extends Struct.CollectionTypeSchema {
+  collectionName: 'checkbox_items';
+  info: {
+    description: 'Content type for checkbox list integration tests';
+    displayName: 'Checkbox Item';
+    pluralName: 'checkbox-items';
+    singularName: 'checkbox-item';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    choices: Schema.Attribute.CustomField<
+      'plugin::checkbox-list.checkbox-list',
+      {
+        enum: ['alpha', 'beta', 'gamma'];
+      }
+    >;
+    choicesDefault: Schema.Attribute.CustomField<
+      'plugin::checkbox-list.checkbox-list',
+      {
+        enum: ['defaultA', 'defaultB'];
+      }
+    > &
+      Schema.Attribute.DefaultTo<['defaultA']>;
+    choicesPrivate: Schema.Attribute.CustomField<
+      'plugin::checkbox-list.checkbox-list',
+      {
+        enum: ['secret', 'top-secret'];
+      }
+    > &
+      Schema.Attribute.Private;
+    choicesRequired: Schema.Attribute.CustomField<
+      'plugin::checkbox-list.checkbox-list',
+      {
+        enum: ['alpha', 'beta'];
+      }
+    > &
+      Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::checkbox-item.checkbox-item'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> & Schema.Attribute.Private;
+  };
+}
+
 export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
   collectionName: 'globals';
   info: {
@@ -963,6 +1014,7 @@ declare module '@strapi/strapi' {
       'api::article.article': ApiArticleArticle;
       'api::author.author': ApiAuthorAuthor;
       'api::category.category': ApiCategoryCategory;
+      'api::checkbox-item.checkbox-item': ApiCheckboxItemCheckboxItem;
       'api::global.global': ApiGlobalGlobal;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
