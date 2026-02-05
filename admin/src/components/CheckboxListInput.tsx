@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { useEffect } from 'react';
 
 import { Box, Checkbox, Field, Flex, Typography } from '@strapi/design-system';
 import { useIntl } from 'react-intl';
@@ -6,7 +7,10 @@ import { useIntl } from 'react-intl';
 type CheckboxListInputProps = {
   name: string;
   value?: unknown;
-  onChange: (eventOrPath: { target: { name: string; value: string[] } }, value?: unknown) => void;
+  onChange: (
+    eventOrPath: { target: { name: string; value: string[] | null } },
+    value?: unknown
+  ) => void;
   attribute?: {
     enum?: string[];
     options?: {
@@ -65,6 +69,21 @@ const CheckboxListInput = ({
   const enumValues = getEnumValues(attribute);
   const selectedValues = normalizeValue(value);
 
+  useEffect(() => {
+    if (!required) {
+      return;
+    }
+
+    if (Array.isArray(value) && value.length === 0) {
+      onChange({
+        target: {
+          name,
+          value: null,
+        },
+      });
+    }
+  }, [name, onChange, required, value]);
+
   const handleToggle = (option: string, isChecked: boolean) => {
     const nextValues = isChecked
       ? Array.from(new Set([...selectedValues, option]))
@@ -73,7 +92,7 @@ const CheckboxListInput = ({
     onChange({
       target: {
         name,
-        value: nextValues,
+        value: required && nextValues.length === 0 ? null : nextValues,
       },
     });
   };
