@@ -69,6 +69,8 @@ jobs:
           node-version: 22
           cache: "npm"
           cache-dependency-path: package-lock.json
+      - name: Upgrade npm for trusted publishing
+        run: npm install -g npm@^11.5.1
       - name: Check tag matches package version
         run: |
           VERSION=$(node -p "require('./package.json').version")
