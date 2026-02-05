@@ -69,11 +69,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@code.popov.link/valentineus/strapi-plugin-checkbox-list.git"
+    "url": "https://code.popov.link/valentineus/strapi-plugin-checkbox-list.git"
   },
   "bugs": {
     "url": "https://code.popov.link/valentineus/strapi-plugin-checkbox-list/issues"
   },
-  "homepage": "https://code.popov.link/valentineus/strapi-plugin-checkbox-list#readme",
+  "homepage": "https://code.popov.link/valentineus/strapi-plugin-checkbox-list",
   "author": "Valentin Popov <valentin@popov.link>"
 }

@@ -24,6 +24,14 @@ jobs:
           cache-dependency-path: |
             package-lock.json
             playground/package-lock.json
+      - name: Check tag matches package version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="${GITHUB_REF_NAME}"
+          if [ "v${VERSION}" != "${TAG}" ]; then
+            echo "Tag ${TAG} does not match package.json version v${VERSION}"
+            exit 1
+          fi
       - name: Write playground .env
         run: |
           printf '%s' "${{ secrets.PLAYGROUND_ENV_BASE64 }}" | base64 -d > playground/.env
@@ -62,6 +70,14 @@ jobs:
           registry-url: https://registry.npmjs.org/
           cache: "npm"
           cache-dependency-path: package-lock.json
+      - name: Check tag matches package version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="${GITHUB_REF_NAME}"
+          if [ "v${VERSION}" != "${TAG}" ]; then
+            echo "Tag ${TAG} does not match package.json version v${VERSION}"
+            exit 1
+          fi
       - name: Install deps
         run: npm ci
       - name: Build plugin
