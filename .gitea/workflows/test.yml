@@ -12,14 +12,19 @@ jobs:
     name: Basic
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: "npm"
           cache-dependency-path: |
             package-lock.json
             playground/package-lock.json
+      - name: Write playground .env
+        run: |
+          printf '%s' "${{ secrets.PLAYGROUND_ENV_BASE64 }}" | base64 -d > playground/.env
       - name: Install root deps
         run: npm ci
       - name: Build plugin
@@ -53,14 +58,19 @@ jobs:
       STRAPI_ADMIN_LASTNAME: User
       DATABASE_FILENAME: .tmp/e2e.db
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: "npm"
           cache-dependency-path: |
             package-lock.json
             playground/package-lock.json
+      - name: Write playground .env
+        run: |
+          printf '%s' "${{ secrets.PLAYGROUND_ENV_BASE64 }}" | base64 -d > playground/.env
       - name: Install root deps
         run: npm ci
       - name: Build plugin
