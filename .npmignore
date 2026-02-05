@@ -1,0 +1,39 @@
+# Dependencies and logs
+node_modules/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Caches and temp
+.cache/
+.tmp/
+*.tgz
+
+# VCS / CI / IDE
+.git/
+.gitea/
+.github/
+.gitlab/
+.vscode/
+.idea/
+.DS_Store
+
+# Playground / tests / coverage
+playground/
+tests/
+coverage/
+**/__tests__/
+**/*.spec.*
+**/*.test.*
+
+# Source-only folders (built output lives in dist/)
+admin/
+server/
+
+# Misc project files
+renovate.config.cjs
+package-lock.json
+.env
+.env.*
