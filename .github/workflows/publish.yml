@@ -57,7 +57,7 @@ jobs:
         run: npm run test:integration
 
   publish:
-    name: Publish to NPM (Trusted Publisher)
+    name: Publish to NPM
     runs-on: ubuntu-latest
     needs: test
     steps:
