@@ -33,7 +33,7 @@ jobs:
           tar -xzf "$TARBALL" -C playground/.yalc/strapi-plugin-checkbox-list --strip-components=1
       - name: Install playground deps
         working-directory: playground
-        run: npm ci
+        run: npm install
       - name: Build playground
         working-directory: playground
         run: npm run build
@@ -62,7 +62,7 @@ jobs:
             package-lock.json
             playground/package-lock.json
       - name: Install root deps
-        run: npm install
+        run: npm ci
       - name: Build plugin
         run: npm run build
       - name: Pack plugin into playground .yalc
@@ -72,7 +72,7 @@ jobs:
           tar -xzf "$TARBALL" -C playground/.yalc/strapi-plugin-checkbox-list --strip-components=1
       - name: Install playground deps
         working-directory: playground
-        run: npm ci
+        run: npm install
       - name: Install Playwright browsers
         working-directory: playground
         run: npx playwright install --with-deps chromium
