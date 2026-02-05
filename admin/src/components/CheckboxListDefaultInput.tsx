@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { Box, Checkbox, Field, Flex, Typography } from '@strapi/design-system';
+import { Box, Field, MultiSelect, MultiSelectOption, Typography } from '@strapi/design-system';
 import { useIntl } from 'react-intl';
 
 type CheckboxListDefaultInputProps = {
@@ -23,6 +23,9 @@ type CheckboxListDefaultInputProps = {
   error?: string;
   modifiedData?: {
     enum?: string[];
+    options?: {
+      enum?: string[];
+    };
   };
 };
 
@@ -51,23 +54,26 @@ const CheckboxListDefaultInput = ({
   modifiedData,
 }: CheckboxListDefaultInputProps) => {
   const { formatMessage } = useIntl();
-  const enumValues = Array.isArray(modifiedData?.enum) ? modifiedData.enum : [];
+  const enumValues = Array.isArray(modifiedData?.options?.enum)
+    ? modifiedData.options.enum
+    : Array.isArray(modifiedData?.enum)
+      ? modifiedData.enum
+      : [];
   const selectedValues = normalizeValue(value);
+  const uniqueValues = Array.from(
+    new Set(enumValues.filter((option) => typeof option === 'string' && option.trim().length > 0))
+  );
 
   const label = intlLabel
     ? formatMessage(intlLabel, intlLabel.values ?? {})
     : name;
   const hint = description ? formatMessage(description, description.values ?? {}) : undefined;
 
-  const handleToggle = (option: string, isChecked: boolean) => {
-    const nextValues = isChecked
-      ? Array.from(new Set([...selectedValues, option]))
-      : selectedValues.filter((item) => item !== option);
-
+  const handleChange = (nextValues: string[] | undefined) => {
     onChange({
       target: {
         name,
-        value: nextValues,
+        value: Array.isArray(nextValues) ? nextValues : [],
       },
     });
   };
@@ -75,21 +81,28 @@ const CheckboxListDefaultInput = ({
   return (
     <Field.Root name={name} hint={hint} error={error} required={required}>
       <Field.Label action={labelAction}>{label}</Field.Label>
-      {enumValues.length > 0 ? (
-        <Flex direction="column" gap={2} paddingTop={1} alignItems="flex-start">
-          {enumValues.map((option) => (
-            <Checkbox
-              key={option}
-              checked={selectedValues.includes(option)}
-              disabled={disabled}
-              onCheckedChange={(checked: boolean | 'indeterminate') =>
-                handleToggle(option, Boolean(checked))
-              }
-            >
-              {option}
-            </Checkbox>
-          ))}
-        </Flex>
+      {uniqueValues.length > 0 ? (
+        <Box paddingTop={1}>
+          <MultiSelect
+            aria-label={label}
+            disabled={disabled}
+            id={name}
+            name={name}
+            onChange={handleChange}
+            placeholder={formatMessage({
+              id: 'checkbox-list.default.placeholder',
+              defaultMessage: 'Select default values',
+            })}
+            value={selectedValues}
+            withTags
+          >
+            {uniqueValues.map((option) => (
+              <MultiSelectOption key={option} value={option}>
+                {option}
+              </MultiSelectOption>
+            ))}
+          </MultiSelect>
+        </Box>
       ) : (
         <Box paddingTop={1}>
           <Typography variant="pi" textColor="neutral500">

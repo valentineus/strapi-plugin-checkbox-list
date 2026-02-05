@@ -26,12 +26,12 @@ const getEnumValues = (attribute: CheckboxListInputProps['attribute']): string[]
     return [];
   }
 
-  if (Array.isArray(attribute.enum)) {
-    return attribute.enum;
-  }
-
   if (Array.isArray(attribute.options?.enum)) {
     return attribute.options.enum;
+  }
+
+  if (Array.isArray(attribute.enum)) {
+    return attribute.enum;
   }
 
   return [];

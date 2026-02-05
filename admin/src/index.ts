@@ -1,7 +1,9 @@
 import { EnumerationField } from '@strapi/icons/symbols';
+import { CheckboxListEnumInput } from './components/CheckboxListEnumInput';
 import { Initializer } from './components/Initializer';
 import { CheckboxListDefaultInput } from './components/CheckboxListDefaultInput';
 import { PLUGIN_ID } from './pluginId';
+import { checkboxListOptionsValidator } from './utils/checkboxListValidator';
 
 export default {
   register(app: any) {
@@ -18,6 +20,10 @@ export default {
       ctbPlugin.apis.forms.components.add({
         id: 'checkbox-list-default',
         component: CheckboxListDefaultInput,
+      });
+      ctbPlugin.apis.forms.components.add({
+        id: 'checkbox-list-enum',
+        component: CheckboxListEnumInput,
       });
     }
 
@@ -47,8 +53,8 @@ export default {
             sectionTitle: null,
             items: [
               {
-                name: 'enum',
-                type: 'textarea-enum',
+                name: 'options.enum',
+                type: 'checkbox-list-enum',
                 size: 6,
                 intlLabel: {
                   id: 'form.attribute.item.enumeration.rules',
@@ -58,6 +64,7 @@ export default {
                   id: 'form.attribute.item.enumeration.placeholder',
                   defaultMessage: 'Ex:\nmorning\nnoon\nevening',
                 },
+                defaultValue: [],
                 validations: {
                   required: true,
                 },
@@ -128,6 +135,7 @@ export default {
             ],
           },
         ],
+        validator: checkboxListOptionsValidator,
       },
     });
   },

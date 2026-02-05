@@ -31,9 +31,11 @@
     "test:ts:back": "run -T tsc -p server/tsconfig.json"
   },
   "dependencies": {
+    "@sindresorhus/slugify": "^2.2.1",
     "@strapi/design-system": "^2.0.0-rc.30",
     "@strapi/icons": "^2.0.0-rc.30",
-    "react-intl": "^7.1.14"
+    "react-intl": "^7.1.14",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@strapi/sdk-plugin": "^5.4.0",
