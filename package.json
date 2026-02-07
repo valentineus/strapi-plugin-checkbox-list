@@ -35,7 +35,7 @@
     "@strapi/design-system": "^2.0.0-rc.30",
     "@strapi/icons": "^2.0.0-rc.30",
     "react-intl": "^7.1.14",
-    "yup": "^0.32.11"
+    "yup": "^1.0.0"
   },
   "devDependencies": {
     "@strapi/sdk-plugin": "^5.4.0",
