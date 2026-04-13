@@ -20,7 +20,7 @@
     "@strapi/plugin-cloud": "5.42.0",
     "@strapi/plugin-users-permissions": "5.42.0",
     "@strapi/strapi": "5.42.0",
-    "better-sqlite3": "12.8.0",
+    "better-sqlite3": "12.9.0",
     "fs-extra": "^11.0.0",
     "mime-types": "^3.0.0",
     "react": "^18.0.0",
